@@ -99,6 +99,11 @@ public class ProjectManager implements IProjectManager {
 
 	private void reloadProjectMarkdown(ProjectModel project) {
 		// project markdown
+		if(!com.gitblit.FileSettings.isValidScriptName(project.name)) {
+			logger.warn(MessageFormat.format("Unsecure project name \"{0}\" ignored!",
+							project.name));	
+			return;
+		}
 		File pmkd = new File(repositoryManager.getRepositoriesFolder(), (project.isRoot ? "" : project.name) + "/project.mkd");
 		if (pmkd.exists()) {
 			Date lm = new Date(pmkd.lastModified());
