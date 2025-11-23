@@ -193,7 +193,7 @@ public class FileSettings extends IStoredSettings {
 	public boolean saveSettings() {
 		String content = FileUtils.readContent(propertiesFile, "\n");
 		for (String key : removals) {
-			String regex = "(?m)^(" + Pattern.quote(key) + "\\s*+=\\s*+)"
+			String regex = "(?m)^(" + java.util.regex.Pattern.quote(key) + "\\s*+=\\s*+)"
 					+ "(?:[^\r\n\\\\]++|\\\\(?:\r?\n|\r|.))*+$";
 			content = content.replaceAll(regex, "");
 		}
@@ -213,7 +213,7 @@ public class FileSettings extends IStoredSettings {
 	public synchronized boolean saveSettings(Map<String, String> settings) {
 		String content = FileUtils.readContent(propertiesFile, "\n");
 		for (Map.Entry<String, String> setting:settings.entrySet()) {
-			String regex = "(?m)^(" + Pattern.quote(setting.getKey()) + "\\s*+=\\s*+)"
+			String regex = "(?m)^(" + java.util.regex.Pattern.quote(setting.getKey()) + "\\s*+=\\s*+)"
 					+ "(?:[^\r\n\\\\]++|\\\\(?:\r?\n|\r|.))*+$";
 			String oldContent = content;
 			content = content.replaceAll(regex, setting.getKey() + " = " + setting.getValue());
