@@ -57,6 +57,29 @@ public class FileSettings extends IStoredSettings {
 	}
 
 	/**
+	 * Check that the provided name or name-part is a safe for using as filename. Returns true if the name is valid.
+	 *
+	 * @param name
+	 * @return true if valid, false otherwise
+	 */
+	public static boolean isValidScriptName(String name) {
+		if (name == null || name.isEmpty()) {
+			return false;
+		}
+		// Prevent any directory traversal, path separators, or invalid characters
+		if (name.contains("..") || name.contains("/") || name.contains("\\") || name.contains(File.separator)) {
+			return false;
+		}
+		// Optionally restrict to a safe regex (only letters, digits, underscores, dash)
+		if (!name.matches("[a-zA-Z0-9_\\-]+")) {
+			return false;
+		}
+		return true;
+	}
+
+
+
+	/**
 	 * Merges the provided settings into this instance.  This will also
 	 * set the target file for this instance IFF it is unset AND the merge
 	 * source is also a FileSettings.  This is a little sneaky.
@@ -170,7 +193,7 @@ public class FileSettings extends IStoredSettings {
 	public boolean saveSettings() {
 		String content = FileUtils.readContent(propertiesFile, "\n");
 		for (String key : removals) {
-			String regex = "(?m)^(" + regExEscape(key) + "\\s*+=\\s*+)"
+			String regex = "(?m)^(" + Pattern.quote(key) + "\\s*+=\\s*+)"
 					+ "(?:[^\r\n\\\\]++|\\\\(?:\r?\n|\r|.))*+$";
 			content = content.replaceAll(regex, "");
 		}
@@ -190,7 +213,7 @@ public class FileSettings extends IStoredSettings {
 	public synchronized boolean saveSettings(Map<String, String> settings) {
 		String content = FileUtils.readContent(propertiesFile, "\n");
 		for (Map.Entry<String, String> setting:settings.entrySet()) {
-			String regex = "(?m)^(" + regExEscape(setting.getKey()) + "\\s*+=\\s*+)"
+			String regex = "(?m)^(" + Pattern.quote(setting.getKey()) + "\\s*+=\\s*+)"
 					+ "(?:[^\r\n\\\\]++|\\\\(?:\r?\n|\r|.))*+$";
 			String oldContent = content;
 			content = content.replaceAll(regex, setting.getKey() + " = " + setting.getValue());
@@ -205,10 +228,6 @@ public class FileSettings extends IStoredSettings {
 		// millisecond resolution of lastModified. (issue-55)
 		forceReload = true;
 		return true;
-	}
-
-	private String regExEscape(String input) {
-		return input.replace(".", "\\.").replace("$", "\\$").replace("{", "\\{");
 	}
 
 	/**

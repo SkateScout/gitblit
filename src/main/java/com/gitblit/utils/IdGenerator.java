@@ -51,8 +51,8 @@ public class IdGenerator {
   public static int mix(final int salt, final int in) {
     short v0 = hi16(in);
     short v1 = lo16(in);
-    v0 += ((v1 << 2) + 0 ^ v1) + (salt ^ (v1 >>> 3)) + 1;
-    v1 += ((v0 << 2) + 2 ^ v0) + (salt ^ (v0 >>> 3)) + 3;
+    v0 += (short)(((v1 << 2) + 0 ^ v1) + (salt ^ (v1 >>> 3)) + 1);
+    v1 += (short)(((v0 << 2) + 2 ^ v0) + (salt ^ (v0 >>> 3)) + 3);
     return result(v0, v1);
   }
 

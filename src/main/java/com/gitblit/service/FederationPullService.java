@@ -436,6 +436,10 @@ public abstract class FederationPullService implements Runnable {
 			if (scripts != null && scripts.size() > 0) {
 				for (Map.Entry<String, String> script : scripts.entrySet()) {
 					String scriptName = script.getKey();
+					if(com.gitblit.FileSettings.isValidScriptName(scriptName)) {
+						logger.warn("Invalid scriptName {} will be ignored", scriptName);
+						continue;
+					}
 					if (scriptName.endsWith(".groovy")) {
 						scriptName = scriptName.substring(0, scriptName.indexOf(".groovy"));
 					}
