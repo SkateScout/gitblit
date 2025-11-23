@@ -272,6 +272,10 @@ public class GitFilter extends AccessRestrictionFilter {
 	@Override
 	protected RepositoryModel createRepository(UserModel user, String repository, String action) {
 		boolean isPush = !StringUtils.isEmpty(action) && GIT_RECEIVE_PACK.equals(action);
+		if(!com.gitblit.FileSettings.isValidScriptName(repository)) {
+			logger.warn(MessageFormat.format("Invalid repository name \"{0}\" !", repository));
+			return null;
+		}
 		
 		if (GIT_LFS.equals(action)) {
 			//Repository must already exist for any filestore actions
