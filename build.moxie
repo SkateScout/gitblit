@@ -69,15 +69,12 @@ resourceDirectories:
 - test 'src/test/resources'
 - site 'src/site/resources'
 
-# compile for Java 8 class format
+# compile for Java 21 class format
 tasks: {
 	'mx:javac' : {
-        source: 1.8
-        target: 1.8
-        compiler: javac1.8
+        source: 21
+        target: 21
         encoding: UTF-8
-        # stop complaints about bootstrap classpath when compiling with Java 7
-        # compilerArgs: '-Xlint:-options'
     }
 }
 
@@ -116,9 +113,8 @@ properties: {
   wikitext.version : 1.4
   sshd.version: 1.7.0
   mina.version: 2.0.27
-  guice.version : 5.1.0
-  # Gitblit maintains a fork of guice-servlet
-  guice-servlet.version : 5.1.0-gb2
+  guice.version : 6.0.0
+  guice-servlet.version : 6.0.0
 }
 
 # Dependencies
