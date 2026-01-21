@@ -69,11 +69,11 @@ resourceDirectories:
 - test 'src/test/resources'
 - site 'src/site/resources'
 
-# compile for Java 21 class format
+# compile for Java 25 class format
 tasks: {
 	'mx:javac' : {
-        source: 21
-        target: 21
+        source: 25
+        target: 25
         encoding: UTF-8
     }
 }
